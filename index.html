@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Matador de Monstro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600" rel="stylesheet">
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="panel scores">
+            <div class="score">
+                <h1>Jogador</h1>
+                    <!-- barra de hp do jogador-->
+                <div class="life-bar">
+                    <div class="life" 
+                    :class="{danger: playerHp < 20}"   
+                    :style="{width:playerHp + '%'}" >
+                    </div>
+                </div>
+                <div>{{playerHp}}%  
+                </div>
+
+            </div>
+            <div class="score">
+                <h1>Monstro</h1>
+            <!-- barra de hp do monstro-->
+                <div class="life-bar">
+                    <div class="life" 
+                    :class="{danger: monsterHp < 20}" 
+                    :style="{width:monsterHp + '%'}" >
+                </div>
+                    </div>
+                <div>{{monsterHp}}%</div>
+            </div>
+        </div>
+         <!-- verifica e mostra o resultado da partida-->
+        <div class="panel result" v-if="hasResult">
+            <div v-if="monsterHp==0" class="win">Você ganhou!!! :)</div>
+            <div v-else="playerHp==0" class="lose">Você perdeu! :(</div>
+        </div>
+
+         <!-- mostra os botões a depender se o jogo está em execução ou não-->
+        <div class="panel buttons" >
+            <template  v-if="running" >
+                <button @click="attack(false)" class="btn attack">Ataque</button>
+                <button @click="attack(true)" class="btn especial-attack">Ataque Especial</button>
+                <button @click="healAndGetHurt" class="btn heal">Curar</button>
+                <button @click="running = false" class="btn give-up">Desistir</button><!-- torna running = false caso clique em desistir-->
+            </template>
+            <button v-else @click="startGame" class="btn new-game">Iniciar Jogo</button>
+        </div>
+
+        <div v-if="logs.length" class="panel logs">
+            <ul>
+                <li class="log" :class="log.classe" v-for="log in logs">{{log.text}}</li>
+            </ul>
+        </div>
+
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
